@@ -2,18 +2,25 @@ package service
 
 import (
 	"blablagram/logger"
+	"blablagram/models"
 	"blablagram/repository"
+	"blablagram/service/user"
+	"context"
 )
 
 type Service struct {
-	log logger.Logger
-	rep *repository.Repository
+	UserService
 }
 
-// New is a constructor for handlers.
-func New(log logger.Logger, rep *repository.Repository) *Service {
+type UserService interface {
+	RegisterUser(ctx context.Context, user *models.RegisterUser) error
+}
+
+// New constructs a new service.
+func New(log logger.Logger, rep *repository.Repository, salt string) (*Service, error) {
+	userService := user.New(log, rep, salt)
+
 	return &Service{
-		log: log,
-		rep: rep,
-	}
+		UserService: userService,
+	}, nil
 }

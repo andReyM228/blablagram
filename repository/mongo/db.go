@@ -61,15 +61,15 @@ func (m *MongoDB) connect(ctx context.Context) (*mongo.Client, error) {
 }
 
 // Create inserts a new document into the collection.
-func (m *MongoDB) Create(ctx context.Context, collectionName string, object interface{}) (*mongo.InsertOneResult, error) {
+func (m *MongoDB) Create(ctx context.Context, collectionName string, object interface{}) error {
 	collection := m.client.Database(m.dbName).Collection(collectionName)
 
-	result, err := collection.InsertOne(ctx, object)
+	_, err := collection.InsertOne(ctx, object)
 	if err != nil {
-		return nil, wrap("failed to insert document", err)
+		return wrap("failed to insert document", err)
 	}
 
-	return result, nil
+	return nil
 }
 
 // Get finds a single document from the collection.

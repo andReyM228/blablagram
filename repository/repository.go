@@ -3,6 +3,9 @@ package repository
 import (
 	"blablagram/repository/mongo"
 	"context"
+	"go.mongodb.org/mongo-driver/bson"
+
+	mongoDriver "go.mongodb.org/mongo-driver/mongo"
 )
 
 type Repository struct {
@@ -10,6 +13,10 @@ type Repository struct {
 }
 
 type Mongo interface {
+	Create(ctx context.Context, collectionName string, object interface{}) error
+	Get(ctx context.Context, collectionName string, filter bson.M) (*mongoDriver.SingleResult, error)
+	Update(ctx context.Context, collectionName string, filter bson.M, update bson.M) (*mongoDriver.UpdateResult, error)
+	Delete(ctx context.Context, collectionName string, filter bson.M) (*mongoDriver.DeleteResult, error)
 }
 
 // New constructs a new repository.

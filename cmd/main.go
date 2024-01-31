@@ -26,7 +26,10 @@ func main() {
 		log.Fatal("creating a repository", err)
 	}
 
-	s := service.New(log, rep)
+	s, err := service.New(log, rep, os.Getenv("SALT"))
+	if err != nil {
+		log.Fatal("creating a service", err)
+	}
 
 	h := handlers.New(log, s)
 
@@ -37,5 +40,4 @@ func main() {
 	if runErr != nil || closeErr != nil {
 		log.Error("server error", errs.Combine(runErr, closeErr))
 	}
-
 }
