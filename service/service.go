@@ -13,7 +13,8 @@ type Service struct {
 }
 
 type UserService interface {
-	RegisterUser(ctx context.Context, user *models.RegisterUser) error
+	RegisterUser(ctx context.Context, user *models.User) error
+	LoginUser(ctx context.Context, user *models.LoginUser) (*models.User, error)
 }
 
 // New constructs a new service.

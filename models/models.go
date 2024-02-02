@@ -8,16 +8,8 @@ type Feed struct {
 	Stories []FeedStory
 }
 
-// User is a model for user entity
+// User is a model for user registration
 type User struct {
-	ID        int64
-	Username  string
-	FullName  string
-	AvatarURL string
-}
-
-// RegisterUser is a model for user registration
-type RegisterUser struct {
 	ID        string
 	Username  string
 	FullName  string
@@ -25,6 +17,13 @@ type RegisterUser struct {
 	Password  string
 	AvatarURL string
 	CreatedAt string
+	IsLogged  bool
+}
+
+// LoginUser is a model for user login
+type LoginUser struct {
+	Email    string
+	Password string
 }
 
 type FeedUser struct {

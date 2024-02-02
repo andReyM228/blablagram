@@ -29,7 +29,7 @@ func (h *Handlers) Status(w http.ResponseWriter, _ *http.Request) {
 
 // RegisterUser is a handler for user registration, it makes email and password validation.
 func (h *Handlers) RegisterUser(w http.ResponseWriter, r *http.Request) {
-	var user models.RegisterUser
+	var user models.User
 	if err := json.NewDecoder(r.Body).Decode(&user); err != nil {
 		newErrorResponse(w, h.log, http.StatusBadRequest, "invalid input body", err)
 		return
@@ -41,5 +41,21 @@ func (h *Handlers) RegisterUser(w http.ResponseWriter, r *http.Request) {
 	}
 
 	w.WriteHeader(http.StatusCreated)
-	json.NewEncoder(w).Encode(user)
+}
+
+// LoginUser is a handler for user login.
+func (h *Handlers) LoginUser(w http.ResponseWriter, r *http.Request) {
+	var user models.LoginUser
+	if err := json.NewDecoder(r.Body).Decode(&user); err != nil {
+		newErrorResponse(w, h.log, http.StatusBadRequest, "invalid input body", err)
+		return
+	}
+
+	_, err := h.service.UserService.LoginUser(r.Context(), &user)
+	if err != nil {
+		newErrorResponse(w, h.log, http.StatusInternalServerError, "failed to login user", err)
+		return
+	}
+
+	w.WriteHeader(http.StatusOK)
 }
