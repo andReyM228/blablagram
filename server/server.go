@@ -6,10 +6,13 @@ import (
 	"blablagram/server/handlers"
 	"context"
 	"errors"
+	"github.com/gorilla/mux"
+	"github.com/rs/cors"
 	"github.com/zeebo/errs"
 	"golang.org/x/sync/errgroup"
 	"net"
 	"net/http"
+	"time"
 )
 
 var (
@@ -33,18 +36,17 @@ func NewServer(log logger.Logger, listener net.Listener, handlers *handlers.Hand
 		listener: listener,
 	}
 
-	//router := mux.NewRouter()
-	//router.HandleFunc("/status", handlers.Status).Methods(http.MethodPost)
-	//
-	//authV1 := router.PathPrefix("/auth/v1").Subrouter()
-	//
-	//authV1.HandleFunc("/signup", handlers.RegisterUser).Methods(http.MethodPost)
-	//
-	//server.server = http.Server{
-	//	Handler:     cors.Default().Handler(router),
-	//	ReadTimeout: time.Hour,
-	//	IdleTimeout: time.Hour,
-	//}
+	router := mux.NewRouter()
+	router.HandleFunc("/status", handlers.Status).Methods(http.MethodPost)
+
+	router.HandleFunc("/reg", handlers.RegisterUser).Methods(http.MethodPost)
+	router.HandleFunc("/login", handlers.LoginUser).Methods(http.MethodPost)
+
+	server.server = http.Server{
+		Handler:     cors.Default().Handler(router),
+		ReadTimeout: time.Hour,
+		IdleTimeout: time.Hour,
+	}
 
 	return server
 }

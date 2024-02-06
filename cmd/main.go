@@ -1,6 +1,7 @@
 package main
 
 import (
+	"blablagram/config"
 	"blablagram/logger/zaplog"
 	"blablagram/repository"
 	"blablagram/server"
@@ -9,24 +10,28 @@ import (
 	"context"
 	"github.com/zeebo/errs"
 	"net"
-	"os"
 )
 
 func main() {
 	log := zaplog.NewLog()
 	ctx := context.Background()
 
+	cfg, err := config.ParseConfig()
+	if err != nil {
+		log.Fatal("parsing config", err)
+	}
+
 	listener, err := net.Listen("tcp", ":7778")
 	if err != nil {
 		log.Fatal("creating a listener", err)
 	}
 
-	rep, err := repository.New(ctx, os.Getenv("MONGO_URL"))
+	rep, err := repository.New(ctx, cfg.Mongo.Url)
 	if err != nil {
 		log.Fatal("creating a repository", err)
 	}
 
-	s, err := service.New(log, rep, os.Getenv("SALT"))
+	s, err := service.New(log, rep, cfg.Hash.Salt)
 	if err != nil {
 		log.Fatal("creating a service", err)
 	}

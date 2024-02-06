@@ -10,14 +10,14 @@ type Feed struct {
 
 // User is a model for user registration
 type User struct {
-	ID        string
-	Username  string
-	FullName  string
-	Email     string
-	Password  string
-	AvatarURL string
-	CreatedAt string
-	IsLogged  bool
+	ID        string `json:"_id"`
+	Username  string `json:"username"`
+	FullName  string `json:"full_name"`
+	Email     string `json:"email"`
+	Password  string `json:"password"`
+	AvatarURL string `json:"avatar_url"`
+	CreatedAt string `json:"created_at"`
+	IsLogged  bool   `json:"is_logged"`
 }
 
 // LoginUser is a model for user login
