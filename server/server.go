@@ -42,6 +42,12 @@ func NewServer(log logger.Logger, listener net.Listener, handlers *handlers.Hand
 	router.HandleFunc("/reg", handlers.RegisterUser).Methods(http.MethodPost)
 	router.HandleFunc("/login", handlers.LoginUser).Methods(http.MethodPost)
 
+	router.HandleFunc("/create_post", handlers.CreatePost).Methods(http.MethodPost)
+	router.HandleFunc("/delete_post", handlers.DeletePost).Methods(http.MethodPost)
+	router.HandleFunc("/update_post", handlers.UpdatePost).Methods(http.MethodPost)
+	router.HandleFunc("/get_post", handlers.GetPost).Methods(http.MethodPost)
+	router.HandleFunc("/get_posts", handlers.GetPosts).Methods(http.MethodPost)
+
 	server.server = http.Server{
 		Handler:     cors.Default().Handler(router),
 		ReadTimeout: time.Hour,

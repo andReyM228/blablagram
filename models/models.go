@@ -1,23 +1,9 @@
 package models
 
-import "time"
-
 type Feed struct {
 	User    FeedUser
 	Posts   []Post
 	Stories []FeedStory
-}
-
-// User is a model for user registration
-type User struct {
-	ID        string `json:"_id"`
-	Username  string `json:"username"`
-	FullName  string `json:"full_name"`
-	Email     string `json:"email"`
-	Password  string `json:"password"`
-	AvatarURL string `json:"avatar_url"`
-	CreatedAt string `json:"created_at"`
-	IsLogged  bool   `json:"is_logged"`
 }
 
 // LoginUser is a model for user login
@@ -26,32 +12,45 @@ type LoginUser struct {
 	Password string
 }
 
+// User is a model for user registration
+type User struct {
+	ID        string `bson:"_id"`
+	Username  string `bson:"username"`
+	FullName  string `bson:"full_name"`
+	Email     string `bson:"email"`
+	Password  string `bson:"password"`
+	AvatarURL string `bson:"avatar_url"`
+	CreatedAt string `bson:"created_at"`
+	IsLogged  bool   `bson:"is_logged"`
+}
+
+type Post struct {
+	ID          string        `bson:"_id"`
+	AuthorID    string        `bson:"author_id"`
+	ImageURL    string        `bson:"image_url"`
+	VideoURL    string        `bson:"video_url"`
+	Description string        `bson:"description"`
+	CreatedAt   string        `bson:"created_at"`
+	Comments    []FeedComment `bson:"comments"`
+}
+
+type FeedComment struct {
+	ID        string `bson:"_id"`
+	Author    User   `bson:"author"`
+	Text      string `bson:"text"`
+	CreatedAt string `bson:"created_at"`
+}
+
 type FeedUser struct {
-	ID        int64
+	ID        string
 	Username  string
 	FullName  string
 	AvatarURL string
 }
 
-type Post struct {
-	ID          int64
-	Author      User
-	CreatedAt   time.Time
-	ImageURL    string
-	VideoURL    string
-	Description string
-}
-
-type FeedComment struct {
-	ID        int64
-	Author    User
-	Text      string
-	CreatedAt time.Time
-}
-
 type FeedStory struct {
-	ID        int64
+	ID        string
 	Author    User
-	CreatedAt time.Time
-	ExpiresAt time.Time
+	CreatedAt string
+	ExpiresAt string
 }
